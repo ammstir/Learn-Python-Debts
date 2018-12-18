@@ -1,0 +1,31 @@
+# Use root/example as user/password credentials
+version: '3.1'
+networks:
+  projectdk:
+    driver: bridge
+
+services:
+  projectdk_mysql:
+    image: mysql:5.6
+    volumes:
+       - mysql-data:/var/lib/mysql
+    environment:
+      MYSQL_ROOT_PASSWORD: password123
+      MYSQL_USER: django
+      MYSQL_PASSWORD: password123
+      MYSQL_DATABASE: learnpythondebts
+    networks:
+      - projectdk
+    ports:
+      - "3306:3306"
+    command: --character-set-server=utf8 --collation-server=utf8_general_ci --init-connect='SET collation_connection = utf8_general_ci; SET NAMES utf8mb4;'
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8080:8080
+
+volumes:
+  mysql-data:
+    driver: local
