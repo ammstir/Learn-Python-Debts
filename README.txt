@@ -1,0 +1,1 @@
+В папке debts нужно создать файл local_settings.py и указать SECRET_KEY
