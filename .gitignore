@@ -105,5 +105,4 @@ venv.bak/
 
 .idea/
 /debts/local_settings.py
-
-
+*.sqlite3
