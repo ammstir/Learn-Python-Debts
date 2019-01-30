@@ -1,47 +1,30 @@
-{% load static %}
-<!doctype html>
-<html>
-    <head>
-         
-         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
-         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
-    
-         <link rel="stylesheet" href="{% static 'css/login.css' %}">
-                
-<!------ Include the above in your HEAD tag ---------->
-    </head>
-<body>
-<div class="sidenav">
-         <div class="login-main-text">
-            <h2>Application<br> Login Page</h2>
-            <p>Login or register from here to access.</p>
-         </div>
-      </div>
-      <div class="main">
-         <div class="col-md-6 col-sm-12">
-            <div class="login-form">
-               <form method="POST" action="{% url 'login' %}">
-                  {% csrf_token %}
-                  <div class="form-group">
-                     {{ form.username.label_tag }}
-                     <div class="form-control">
-                           {{ form.username }}
-                     </div>
-                  </div>
-                  <div class="form-group">
-                     {{ form.password.label_tag }}
-                     <div class="form-control">
-                        {{ form.password }}
-                     </div>
-                  </div>
-                  {{ form.errors }}
-                  <button type="submit" class="btn btn-black">Login</button>
-                  <button type="submit" class="btn btn-secondary">Register</button>
-                  
-               </form>
+{% extends "base.html" %}
+
+
+{% block content %}
+<div class="main">
+   <div class="col-md-6 col-sm-12">
+      <div class="login-form">
+         <form method="POST" action="{% url 'login' %}">
+            {% csrf_token %}
+            <div class="form-group">
+               {{ form.username.label_tag }}
+               <br>
+               {{ form.username }}                     
             </div>
-         </div>
+            <div class="form-group">
+            {{ form.password.label_tag }}
+            <br>
+            {{ form.password }}
+            </div>
+            {{ form.errors }}
+            <button type="submit" class="btn btn-black">Login</button>
+         </form>
+         <br>
+         <form method="GET" action="{% url 'register' %}">
+            <button type="submit" class="btn btn-secondary">Register</button>
+         </form>            
       </div>
-     
-</body>
-</html>
+   </div>
+<div>
+{% endblock %}     
