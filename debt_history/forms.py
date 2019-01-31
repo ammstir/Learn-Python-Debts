@@ -14,10 +14,10 @@ class RegisterForm(forms.Form):
     confirmation_password = forms.CharField(label='Confirmation Password', widget=forms.PasswordInput)
 
 
-class AddBill(forms.Form):
+class AddBill(forms.ModelForm):
 
     class Meta:
-        model = Bills
+        model = Bill
         fields = ('title', 'debt_amount', 'text_comment')
 
 

@@ -3,7 +3,7 @@ from django.utils import timezone
 from django.contrib.auth.models import User
 
 
-class Bills(models.Model):
+class Bill(models.Model):
     author = models.ForeignKey(User, on_delete=models.PROTECT)
     title = models.CharField(max_length=200)
     debt_amount = models.FloatField(max_length=6)
@@ -23,8 +23,9 @@ class Group(models.Model):
         return self.group_name
 
 
-class Debts(models.Model):
-    bill_id = models.ForeignKey(Bills, on_delete=models.CASCADE)
-    user_id = models.ForeignKey(User, on_delete=models.PROTECT)
+class Debt(models.Model):
+    bill = models.ForeignKey(Bill, on_delete=models.CASCADE)
+    user = models.ForeignKey(User, on_delete=models.PROTECT)
     percent = models.FloatField()
     amount_paid = models.FloatField()
+

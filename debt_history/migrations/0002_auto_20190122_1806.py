@@ -31,7 +31,7 @@ class Migration(migrations.Migration):
                 ('id', models.AutoField(auto_created=True, primary_key=True, serialize=False, verbose_name='ID')),
                 ('percent', models.FloatField()),
                 ('amount_paid', models.FloatField()),
-                ('bill_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='debt_history.Bills')),
+                ('bill_id', models.ForeignKey(on_delete=django.db.models.deletion.CASCADE, to='debt_history.Bill')),
                 ('user_id', models.ForeignKey(on_delete=django.db.models.deletion.PROTECT, to=settings.AUTH_USER_MODEL)),
             ],
         ),

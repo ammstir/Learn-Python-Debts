@@ -1,6 +1,6 @@
 from django.contrib import admin
 from .models import *
 
-admin.site.register(Bills)
+admin.site.register(Bill)
 admin.site.register(Group)
-admin.site.register(Debts)
+admin.site.register(Debt)

@@ -14,8 +14,10 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('debt_history/', include('debt_history.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include
+
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-]
+    path('', include('debt_history.urls')),
+    ]
