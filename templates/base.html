@@ -1,26 +1,19 @@
 {% load static %}
-
 <!DOCTYPE html>
 <head>
-    {% block boostrap_css %}
+        {% block css %}
         <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/css/bootstrap.min.css" integrity="sha384-GJzZqFGwb1QTTN6wy59ffF1BuGJpLSa9DkKMp0DgiMDm4iYMj70gZWKYbI706tWS" crossorigin="anonymous">
         <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.2.1/js/bootstrap.min.js" integrity="sha384-B0UglyR+jN6CkvvICOB2joaf5I4l3gm9GU6Hc1og6Ls7i6U/mkkaduKaBhlAXv9k" crossorigin="anonymous"></script>
         <link rel="stylesheet" href="{% static 'css/login.css' %}">
-    {% endblock %}
+        {% endblock %}
 </head>
 
 <body>
   {% block sidebar %}
-  <div class="sidenav">
-        <div class="login-main-text">
-           {% block title_sidebar %}
-           <h2>Debtswise<br> Login Page</h2>
-            <p>Login or register from here to access.</p>
-               
-           {% endblock %}
-        </div>
-     </div>
-     {% endblock %}
-  {% block content %}<!-- default content text (typically empty) -->{% endblock %}
+  {% endblock %}
+  {% block content %}
+  {% endblock %}
+  
 </body>
+
 </html>
