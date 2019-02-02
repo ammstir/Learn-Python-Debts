@@ -1,11 +1,21 @@
 from django.shortcuts import render
 from .forms import LoginForm, AddBill
+from .models import Bill
 
 
 def make_bill(request):
-    form = AddBill(request.POST)
-    new_bill = form.save()
-    return render(request, 'debt_history/make_debts.html', {'form': form})
+    if request.method == 'POST':
+        form = AddBill(request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            print(data)
+            bill = Bill(author=request.user, title=data['title'],
+                        debt_amount=data['debt_amount'], text_comment=data['text_comment'])
+            bill.save()
+            return render(request, 'debt_history/make_debts.html', {'form': form})
+    else:
+        form = AddBill()
+        return render(request, 'debt_history/make_debts.html', {'form': form})
 
 
 def make_login(request):
