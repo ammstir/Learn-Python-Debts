@@ -8,9 +8,7 @@
     <h1>Bill</h1>
     <form action="" method="post" class="post-form">
         {% csrf_token %}
-        {{ form.title }} <br>
-        {{ form.debt_amount }} <br>
-        {{ form.text_comment }}
+        {{ form.as_p }}
         <input type="submit" value="Submit">
     </form>
 </body>

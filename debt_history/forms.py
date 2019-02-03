@@ -16,9 +16,14 @@ class RegisterForm(forms.Form):
 
 class AddBill(forms.ModelForm):
 
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        group_choices = tuple((group.id, group.group_name) for group in user.debt_groups.all())
+        self.fields['group'] = forms.ChoiceField(widget=forms.Select, choices=group_choices)
+
     class Meta:
         model = Bill
-        fields = ('title', 'debt_amount', 'text_comment')
+        exclude = ('author', 'created_date')
 
 
 class AddGroup(forms.Form):
