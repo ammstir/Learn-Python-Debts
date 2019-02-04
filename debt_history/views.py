@@ -14,7 +14,7 @@ def make_bill(request):
             bill.save()
 
             group = Group.objects.get(id=int(form.cleaned_data['group']))
-            percent = 100/len(group.users.all())
+            percent = round(100/len(group.users.all()), 2)
 
             for user in group.users.exclude(id=current_user.id).all():
                 debt = Debt(user=user, bill=bill, percent=percent)
@@ -24,6 +24,24 @@ def make_bill(request):
     else:
         form = AddBill(request.user)
     return render(request, 'debt_history/make_debts.html', {'form': form})
+
+
+def debt_list(request):
+    debt_l = Debt.objects.all()
+    debts = []
+    for debt in debt_l:
+        id = debt.id
+        bill = debt.bill.title
+        amount = round(debt.bill.debt_amount * debt.percent / 100, 2)
+        participant = debt.user.username
+        debts.append({'id': id, 'billname': bill, 'amount': amount, 'participant': participant})
+
+    return render(request, 'debt_history/debt_list.html', {'debt_list': debts})
+
+
+def bill_list(request):
+    bills = Bill.objects.all()
+    return render(request, 'debt_history/bills_list.html', {'bill_list': bills})
 
 
 def make_login(request):

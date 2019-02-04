@@ -47,5 +47,3 @@ class PayBill(forms.Form):
     friend = forms.CharField(label="Friend's name", max_length=20)
     amount = forms.FloatField(label='How much')
     date = forms.DateField(label='When was payed')
-
-
