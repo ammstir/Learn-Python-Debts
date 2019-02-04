@@ -14,5 +14,10 @@
             {{ debt.participant }}<br>
         {% endfor %}
     </p>
+
+        <h1>DEBTS BY USER</h1>
+        {% for user_debt in debts_by_user %}
+            <p>{{ user_debt }} {{ debts_by_user }}</p>
+        {% endfor %}
 </body>
 </html>

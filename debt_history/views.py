@@ -36,7 +36,15 @@ def debt_list(request):
         participant = debt.user.username
         debts.append({'id': id, 'billname': bill, 'amount': amount, 'participant': participant})
 
-    return render(request, 'debt_history/debt_list.html', {'debt_list': debts})
+    debts_by_user = {}
+    for debt in debts:
+        if debt['participant'] in debts_by_user:
+            debts_by_user[debt['participant']] += debt['amount']
+        else:
+            debts_by_user[debt['participant']] = debt['amount']
+    print(debts_by_user)
+
+    return render(request, 'debt_history/debt_list.html', {'debt_list': debts, 'debts_by_user': debts_by_user})
 
 
 def bill_list(request):
