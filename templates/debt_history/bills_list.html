@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+</head>
+<body>
+    <h1>YOUR BILLS</h1>
+    <p>
+        {% for bill in bill_list %}
+            {{ bill.title }}
+            {{ bill.debt_amount }}
+            {{ bill.created_date }}<br>
+        {% endfor %}
+    </p>
+
+</body>
+</html>
