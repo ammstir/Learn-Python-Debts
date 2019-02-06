@@ -21,7 +21,7 @@ import debt_history
 
 urlpatterns = [
     path('admin/', admin.site.urls),
-    path('', LoginView.as_view(), name='login'),
+    path('login/', LoginView.as_view(), name='login'),
     path('', include('debt_history.urls')),
      
      ]

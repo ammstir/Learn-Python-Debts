@@ -31,6 +31,7 @@ ALLOWED_HOSTS = ['127.0.0.1', 'localhost']
 # Application definition
 
 INSTALLED_APPS = [
+    
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -38,6 +39,7 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'debt_history'
+    
 ]
 
 MIDDLEWARE = [
@@ -125,6 +127,8 @@ STATICFILES_DIRS = (
 ) 
 
 
+LOGIN_URL = 'login'
+LOGOUT_URL = 'logout'
 
 LOGIN_REDIRECT_URL  = 'make_debt'
 

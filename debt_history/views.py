@@ -1,7 +1,8 @@
 from django.shortcuts import render, redirect
 from django.views.generic.edit import FormView
-from django.contrib.auth import authenticate, login
+from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
 from django import forms
 from debt_history.models import *
 from .forms import LoginForm, RegisterForm
@@ -22,8 +23,11 @@ def registration(request):
     return render(request, 'registration/register.html', {'form': form})
 
 
+def logout_view(request):
+    logout(request)
+    return render(request, 'registration/my_logout.html')
         
-
+@login_required
 def make_debt(request):
     if request.method == 'POST':
         form = LoginForm(request.POST)
