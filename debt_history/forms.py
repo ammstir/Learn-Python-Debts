@@ -27,9 +27,15 @@ class AddBill(forms.ModelForm):
         exclude = ('author', 'created_date')
 
 
-class AddGroup(forms.Form):
-    group_name = forms.CharField(label='Group Name', max_length=20)
-    participants = forms.MultipleChoiceField(label='Friends List')
+class AddGroup(forms.ModelForm):
+    
+    class Meta:
+        model = Group
+        fields = ('group_name', 'users',)
+    
+    
+    #group_name = forms.CharField(label='Group Name', max_length=20)
+    #participants = forms.MultipleChoiceField(label='Friends List')
 
 
 class ShowAll(forms.Form):

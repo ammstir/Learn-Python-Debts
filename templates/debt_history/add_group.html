@@ -1,0 +1,23 @@
+{% extends "base_auth.html" %}
+
+{% block title_sidebar %}
+<h2>Debtswise<br> Group Page</h2>
+<p>Add here group and users</p>
+{% endblock %}
+
+{% block content %}
+<div class="main">
+        <div class="col-md-6 col-sm-12">
+           <div class="login-form">
+                <h1>Создание группы и добавление участников:</h1>
+                <form method="POST" class="post-form">
+                    {% csrf_token %}
+                    {{ form.as_p }}
+                    {{ form.errors }}
+                    <input type="submit" value="Сохранить">
+                    
+                </form>     
+           </div>
+        </div>
+     <div>
+{% endblock %}
