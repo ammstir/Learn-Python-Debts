@@ -1,8 +1,50 @@
-from django.shortcuts import render
-from .forms import LoginForm, AddBill
+
+from django.shortcuts import render, redirect
+from django.views.generic.edit import FormView
+from django.contrib.auth import authenticate, login, logout
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.decorators import login_required
+from django import forms
+from debt_history.models import *
+from .forms import LoginForm, RegisterForm, AddBill, AddGroup
+from .models import Debt
 from .models import Bill, Group, Debt
 
 
+def registration(request):
+    if request.method == 'POST':
+        form = RegisterForm(request.POST)
+        if form.is_valid():
+            form.save()
+            username = form.cleaned_data.get('username')
+            my_password = form.cleaned_data.get('password1')
+            user = authenticate(username=username, password=my_password)
+            login(request, user)
+            return redirect('login')
+    else:
+        form = RegisterForm()
+    return render(request, 'registration/register.html', {'form': form})
+
+
+def logout_view(request):
+    logout(request)
+    return render(request, 'registration/my_logout.html')
+
+@login_required
+def add_group(request):
+    if request.method == "POST":
+        form = AddGroup(request.POST)
+        if form.is_valid():
+            form.save()
+            return redirect('make_bill')
+
+    else:
+        form = AddGroup()
+    return render(request, 'debt_history/add_group.html', {'form': form})
+
+
+
+@login_required
 def make_bill(request):
     current_user = request.user
     if request.method == 'POST':
@@ -52,8 +94,6 @@ def bill_list(request):
     return render(request, 'debt_history/bills_list.html', {'bill_list': bills})
 
 
-def make_login(request):
-    login = LoginForm(request.POST)
-    return render(request, 'debt_history/make_login.html', {'form': login})
+
 
 

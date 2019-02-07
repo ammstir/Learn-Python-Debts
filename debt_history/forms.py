@@ -1,17 +1,18 @@
 from django import forms
 from debt_history.models import *
+from django.contrib.auth.forms import UserCreationForm
+from django.contrib.auth.models import User
 
+
+class RegisterForm(UserCreationForm):
+    email = forms.EmailField(max_length=254, help_text='Это поле обязательно')
+    class Meta:
+        model = User
+        fields = ('username', 'email', 'password1', 'password2', )
 
 class LoginForm(forms.Form):
     username = forms.CharField(label='Username', max_length=20)
     password = forms.CharField(label='Password', widget=forms.PasswordInput)
-
-
-class RegisterForm(forms.Form):
-    username = forms.CharField(label='Username', max_length=20)
-    email = forms.EmailField(label='Your email', max_length=40)
-    password = forms.CharField(label='Password', widget=forms.PasswordInput)
-    confirmation_password = forms.CharField(label='Confirmation Password', widget=forms.PasswordInput)
 
 
 class AddBill(forms.ModelForm):
@@ -26,9 +27,15 @@ class AddBill(forms.ModelForm):
         exclude = ('author', 'created_date')
 
 
-class AddGroup(forms.Form):
-    group_name = forms.CharField(label='Group Name', max_length=20)
-    participants = forms.MultipleChoiceField(label='Friends List')
+class AddGroup(forms.ModelForm):
+    
+    class Meta:
+        model = Group
+        fields = ('group_name', 'users',)
+    
+    
+    #group_name = forms.CharField(label='Group Name', max_length=20)
+    #participants = forms.MultipleChoiceField(label='Friends List')
 
 
 class ShowAll(forms.Form):
