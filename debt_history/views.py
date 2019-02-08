@@ -2,7 +2,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .forms import RegisterForm, AddBill, AddGroup
+from .forms import RegisterForm, AddBill, AddGroup, PayBill
 from .models import Bill, Group, Debt
 
 # from django.views.generic.edit import FormView
@@ -68,14 +68,14 @@ def make_bill(request):
 
 
 def debt_list(request):
-    debt_l = Debt.objects.all()
+    debt_l = Debt.objects.filter(bill__author=request.user, paid=False).all()
     debts = []
     for debt in debt_l:
-        id = debt.id
+        debt_id = debt.id
         bill = debt.bill.title
-        amount = round(debt.bill.debt_amount * debt.percent / 100, 2)
+        amount = calculate_debt_amount(debt)
         participant = debt.user.username
-        debts.append({'id': id, 'billname': bill, 'amount': amount, 'participant': participant})
+        debts.append({'id': debt_id, 'billname': bill, 'amount': amount, 'participant': participant})
 
     debts_by_user = {}
     for debt in debts:
@@ -83,7 +83,6 @@ def debt_list(request):
             debts_by_user[debt['participant']] += debt['amount']
         else:
             debts_by_user[debt['participant']] = debt['amount']
-    print(debts_by_user)
 
     return render(request, 'debt_history/debt_list.html', {'debt_list': debts, 'debts_by_user': debts_by_user})
 
@@ -99,7 +98,7 @@ def whom_how_much(request):
     whom = {}
     for debt in debts:
         name = debt.bill.author.username
-        amount = round(debt.bill.debt_amount * debt.percent / 100, 2)
+        amount = calculate_debt_amount(debt)
         if name not in whom:
             whom.update({name: amount})
         else:
@@ -108,6 +107,45 @@ def whom_how_much(request):
     return render(request, 'debt_history/my_debts.html', {'whom': whom})
 
 
+def money_return(request):
+    current_user = request.user.id
+    if request != 'POST':
+        form = PayBill(request.user)
+    else:
+        form = PayBill(request.user, request.POST)
+        if form.is_valid():
+            data = form.cleaned_data
+            print(data)
+            amount = data['amount']
+            amount = pay_money(amount)
+            if amount > 0:
+                bill = Bill(author=current_user, title='Излишек',
+                            debt_amount=amount, text_comment='Излишек')
+                bill.save()
+                debt = Debt(user=data['friend'], bill=bill, percent=100)
+                debt.save()
+
+            return render(request, 'debt_history/return_debts.html', {'form': form})
+
+    return render(request, 'debt_history/return_debts.html', {'form': form})
 
 
+def pay_money(amount):
+    for debt in Debt.objects.exclude(paid=True).all():
+        need_for_debt = calculate_debt_amount(debt) - debt.amount_paid
+        if need_for_debt > amount:
+            debt.amount_paid += amount
+            break
+        elif need_for_debt == amount:
+            debt.amount_paid += amount
+            debt.paid = True
+            break
+        else:
+            debt.amount_paid += need_for_debt
+            debt.paid = True
+            amount = amount - need_for_debt
+    return amount
 
+
+def calculate_debt_amount(debt):
+    return round(debt.bill.debt_amount * debt.percent / 100, 2)

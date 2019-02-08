@@ -27,4 +27,5 @@ class Debt(models.Model):
     user = models.ForeignKey(User, on_delete=models.PROTECT)
     percent = models.FloatField(default=100)
     amount_paid = models.FloatField(default=0.0)
+    paid = models.BooleanField(default=False)
 

@@ -1,3 +1,4 @@
+from datetime import datetime
 from django import forms
 from debt_history.models import *
 from django.contrib.auth.forms import UserCreationForm
@@ -33,9 +34,7 @@ class AddGroup(forms.ModelForm):
     
     class Meta:
         model = Group
-        fields = ('group_name', 'users',)
-    
-    
+        fields = ('group_name', 'users')
     # group_name = forms.CharField(label='Group Name', max_length=20)
     # participants = forms.MultipleChoiceField(label='Friends List')
 
@@ -53,6 +52,10 @@ class AddFriend(forms.Form):
 
 
 class PayBill(forms.Form):
-    friend = forms.CharField(label="Friend's name", max_length=20)
     amount = forms.FloatField(label='How much')
-    date = forms.DateField(label='When was payed')
+    date = forms.DateField(label='When was payed', initial=datetime.now())
+
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        user_choices = tuple((users.id, users.username) for users in User.objects.exclude(id=user.id))
+        self.fields['friend'] = forms.ChoiceField(widget=forms.Select, choices=user_choices)
