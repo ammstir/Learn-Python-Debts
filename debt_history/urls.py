@@ -9,6 +9,5 @@ urlpatterns = [
     path('bills/new/', make_bill, name='make_bill'),
     path('debt/list/', debt_list, name='debt_list'),
     path('bills/list/', bill_list, name='bill_list'),
-    #path('', main )
-
+    path('debts/my/', whom_how_much, name='whom_how_much'),
 ]

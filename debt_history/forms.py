@@ -6,9 +6,11 @@ from django.contrib.auth.models import User
 
 class RegisterForm(UserCreationForm):
     email = forms.EmailField(max_length=254, help_text='Это поле обязательно')
+
     class Meta:
         model = User
         fields = ('username', 'email', 'password1', 'password2', )
+
 
 class LoginForm(forms.Form):
     username = forms.CharField(label='Username', max_length=20)
@@ -34,8 +36,8 @@ class AddGroup(forms.ModelForm):
         fields = ('group_name', 'users',)
     
     
-    #group_name = forms.CharField(label='Group Name', max_length=20)
-    #participants = forms.MultipleChoiceField(label='Friends List')
+    # group_name = forms.CharField(label='Group Name', max_length=20)
+    # participants = forms.MultipleChoiceField(label='Friends List')
 
 
 class ShowAll(forms.Form):
