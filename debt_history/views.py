@@ -1,14 +1,16 @@
 
 from django.shortcuts import render, redirect
-from django.views.generic.edit import FormView
 from django.contrib.auth import authenticate, login, logout
-from django.contrib.auth.forms import UserCreationForm
 from django.contrib.auth.decorators import login_required
 from django import forms
 from debt_history.models import *
 from .forms import RegisterForm, AddBill, AddGroup, ShowGroup
 from .models import Debt
 from .models import Bill, Group, Debt
+
+# from django.views.generic.edit import FormView
+# from django.contrib.auth.forms import UserCreationForm
+# from django import forms
 
 
 def registration(request):
@@ -30,6 +32,7 @@ def logout_view(request):
     logout(request)
     return render(request, 'registration/my_logout.html')
 
+
 @login_required
 def add_group(request):
     if request.method == "POST":
@@ -41,7 +44,6 @@ def add_group(request):
     else:
         form = AddGroup()
     return render(request, 'debt_history/add_group.html', {'form': form})
-
 
 
 @login_required
@@ -101,6 +103,21 @@ def group_list(request):
     return render(request, 'dash/dashleftbar.html', {'form': form})
 
     
+
+
+def whom_how_much(request):
+    user_id = request.user.id
+    debts = Debt.objects.filter(user_id=user_id)
+    whom = {}
+    for debt in debts:
+        name = debt.bill.author.username
+        amount = round(debt.bill.debt_amount * debt.percent / 100, 2)
+        if name not in whom:
+            whom.update({name: amount})
+        else:
+            whom[name] += amount
+
+    return render(request, 'debt_history/my_debts.html', {'whom': whom})
 
 
 
