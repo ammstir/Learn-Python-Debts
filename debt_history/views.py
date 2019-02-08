@@ -3,9 +3,9 @@ from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
 from django import forms
+from django.db.models import Sum
 from debt_history.models import *
 from .forms import RegisterForm, AddBill, AddGroup, ShowGroup
-from .models import Debt
 from .models import Bill, Group, Debt
 
 # from django.views.generic.edit import FormView
@@ -89,7 +89,13 @@ def debt_list(request):
             debts_by_user[debt['participant']] = debt['amount']
     print(debts_by_user)
 
-    return render(request, 'debt_history/debt_list.html', {'debt_list': debts, 'debts_by_user': debts_by_user})
+    total_balance = {}
+    total_balance = Bill.objects.aggregate(Sum('debt_amount'))
+    
+
+    
+
+    return render(request, 'debt_history/debt_list.html', {'debt_list': debts, 'debts_by_user': debts_by_user, 'total_balance': total_balance})
 
 #просто выводит все объекты модели Bill
 def bill_list(request):
