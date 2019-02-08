@@ -2,7 +2,10 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from .forms import RegisterForm, AddBill, AddGroup
+from django import forms
+from debt_history.models import *
+from .forms import RegisterForm, AddBill, AddGroup, ShowGroup
+from .models import Debt
 from .models import Bill, Group, Debt
 
 # from django.views.generic.edit import FormView
@@ -36,7 +39,7 @@ def add_group(request):
         form = AddGroup(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('make_bill')
+            return redirect('debt_list')
 
     else:
         form = AddGroup()
@@ -60,13 +63,14 @@ def make_bill(request):
             for user in group.users.exclude(id=current_user.id).all():
                 debt = Debt(user=user, bill=bill, percent=percent)
                 debt.save()
-
-            return render(request, 'debt_history/make_debts.html', {'form': form})
+            
+            return redirect('debt_list')
+            
     else:
         form = AddBill(request.user)
     return render(request, 'debt_history/make_debts.html', {'form': form})
 
-
+@login_required
 def debt_list(request):
     debt_l = Debt.objects.all()
     debts = []
@@ -87,10 +91,18 @@ def debt_list(request):
 
     return render(request, 'debt_history/debt_list.html', {'debt_list': debts, 'debts_by_user': debts_by_user})
 
-
+#просто выводит все объекты модели Bill
 def bill_list(request):
     bills = Bill.objects.all()
     return render(request, 'debt_history/bills_list.html', {'bill_list': bills})
+
+@login_required
+def group_list(request):
+    current_user = request.user
+    form = ShowGroup(current_user)
+    return render(request, 'dash/dashleftbar.html', {'form': form})
+
+    
 
 
 def whom_how_much(request):

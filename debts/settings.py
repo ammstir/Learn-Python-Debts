@@ -128,7 +128,7 @@ STATICFILES_DIRS = (
 LOGIN_URL = 'login'
 LOGOUT_URL = 'logout'
 
-LOGIN_REDIRECT_URL  = 'make_bill'
+LOGIN_REDIRECT_URL  = 'debt_list'
 
 try:
     from .local_settings import *

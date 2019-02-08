@@ -2,7 +2,7 @@
 
 {% block title_sidebar %}
 <h2>Debtswise<br> Bill Page</h2>
-<p>Add here bill</p>
+<p>Add here a new bill</p>
 {% endblock %}
 
 {% block content %}
@@ -13,7 +13,7 @@
             <form action="" method="post" class="post-form">
                 {% csrf_token %}
                 {{ form.as_p }}
-                <input type="submit" value="Submit">
+                <button type="submit" class="btn btn-black">Сохранить</button>
             </form>
         </div>
     </div>
