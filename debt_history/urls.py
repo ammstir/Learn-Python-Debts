@@ -1,5 +1,6 @@
 from django.urls import path
-from .views import registration, logout_view, make_bill, debt_list, bill_list, add_group, whom_how_much, money_return
+from .views import registration, logout_view, make_bill, debt_list, bill_list, add_group, whom_how_much, group_list, money_return
+
 
 
 urlpatterns = [
@@ -11,4 +12,8 @@ urlpatterns = [
     path('bills/list/', bill_list, name='bill_list'),
     path('debts/my/', whom_how_much, name='whom_how_much'),
     path('return/', money_return, name='money_return'),
+    path('group/list/', group_list, name='group_list'),
+    #path('', main )
+
+
 ]

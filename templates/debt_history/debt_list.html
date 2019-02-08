@@ -1,23 +1,80 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Title</title>
-</head>
-<body>
-    <h1>YOUR DEBTS</h1>
-    <p>
-        {% for debt in debt_list %}
-            {{ debt.id }}
-            {{ debt.billname }}
-            {{ debt.amount }}
-            {{ debt.participant }}<br>
-        {% endfor %}
-    </p>
+{% extends "dash\dashcentercontent.html" %}
 
-        <h1>DEBTS BY USER</h1>
+
+{% block buttons %}
+<br>
+<div class="container">
+        <div class="row">
+          <div class="col-sm">
+                <h2>Дашборд</h2>
+          </div>
+          <div class="col-sm">
+                <a class="btn btn-secondary btn-sm" href="{% url 'make_bill' %}" role="button">Добавить долг</a>
+          </div>
+          <div class="col-sm">
+                <a class="btn btn-secondary btn-sm" href="{% url 'newgroup' %}" role="button">Добавить группу</a>
+          </div>
+          <div class="col-sm">
+                <a class="btn btn-secondary btn-sm" href="{% url 'make_bill' %}" role="button">Погасить долг</a>
+            </div>
+        </div>
+    </div>
+
+{% endblock %}
+	
+<hr>
+{% block balance %}
+<br>
+    <div class="container">
+        <div class="row">
+          <div class="col-sm" align="center">
+            Общий баланс группы {{ total_balance.debt_amount__sum }}
+          </div>
+          <div class="col-sm">
+            Тут сколько вы суммарно должны всем
+          </div>
+          <div class="col-sm">
+            Тут сколько вам
+          </div>
+        </div>
+        <hr>
+    </div>
+
+{% endblock %}
+	
+
+{% block history %}
+
+        
+               
+
+            <div class="container">
+                    <div class="row">
+                      <div class="col-sm">
+                        </div>
+                      <div class="col-sm">
+                            <h3 align="center" >Ваши долги</h3>
+                            {% for debt in debt_list %}
+                                {{ debt.id }}
+                                {{ debt.billname }}
+                                {{ debt.amount }}
+                                {{ debt.participant }}<br>
+                            {% endfor %}
+                      </div>
+                      <div class="col-sm">
+                       </div>
+                    </div>
+                </div>
+        
+    
+	
+            <hr>
+        <div align="center">
+        <h3>Общие долги по пользователям</h3>
         {% for user_debt in debts_by_user %}
             <p>{{ user_debt }} {{ debts_by_user }}</p>
         {% endfor %}
-</body>
-</html>
+        </div>
+       
+
+{% endblock %}

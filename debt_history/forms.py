@@ -13,9 +13,10 @@ class RegisterForm(UserCreationForm):
         fields = ('username', 'email', 'password1', 'password2', )
 
 
-class LoginForm(forms.Form):
-    username = forms.CharField(label='Username', max_length=20)
-    password = forms.CharField(label='Password', widget=forms.PasswordInput)
+#class LoginForm(forms.Form):
+    #username = forms.CharField(label='Username', max_length=20)
+    #password = forms.CharField(label='Password', widget=forms.PasswordInput)
+
 
 
 class AddBill(forms.ModelForm):
@@ -29,12 +30,25 @@ class AddBill(forms.ModelForm):
         model = Bill
         exclude = ('author', 'created_date')
 
+class ShowGroup(forms.ModelForm):
 
-class AddGroup(forms.ModelForm):
+    def __init__(self, user, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        group_choices = tuple((group.id, group.group_name) for group in user.debt_groups.all())
+        self.fields['group'] = forms.ChoiceField(widget=forms.Select, choices=group_choices)
     
     class Meta:
         model = Group
         fields = ('group_name', 'users')
+
+
+class AddGroup(forms.ModelForm):
+                 
+    class Meta:
+        model = Group
+        fields = ('group_name', 'users',)
+    
+
     # group_name = forms.CharField(label='Group Name', max_length=20)
     # participants = forms.MultipleChoiceField(label='Friends List')
 
