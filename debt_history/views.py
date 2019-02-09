@@ -39,7 +39,7 @@ def add_group(request):
         form = AddGroup(request.POST)
         if form.is_valid():
             form.save()
-            return redirect('debt_list')
+            return redirect('common')
 
     else:
         form = AddGroup()
@@ -64,14 +64,14 @@ def make_bill(request):
                 debt = Debt(user=user, bill=bill, percent=percent)
                 debt.save()
             
-            return redirect('debt_list')
+            return redirect('common')
             
     else:
         form = AddBill(request.user)
     return render(request, 'debt_history/make_debts.html', {'form': form})
 
 @login_required
-def debt_list(request):
+def common(request):
     current_user = request.user
     form = ShowGroup(current_user)
     debt_l = Debt.objects.filter(bill__author=request.user, paid=False).all()
@@ -103,11 +103,9 @@ def debt_list(request):
             whom.update({name: amount})
         else:
             whom[name] += amount
+ 
 
-    
-    
-
-    return render(request, 'debt_history/debt_list.html', {'debt_list': debts, 'debts_by_user': debts_by_user, 'total_balance': total_balance,'whom': whom, 'form': form})
+    return render(request, 'debt_history/debt_list.html', {'common': debts, 'debts_by_user': debts_by_user, 'total_balance': total_balance,'whom': whom, 'form': form})
 
 #просто выводит все объекты модели Bill
 def bill_list(request):
@@ -155,7 +153,7 @@ def money_return(request):
                 bill.save()
                 debt = Debt(user=data['friend'], bill=bill, percent=100)
                 debt.save()
-        return redirect('debt_list')
+        #return redirect('common') - после сохранения формы нужен редирект, но так как форма не работает, редирект тож глючит
             
 
     return render(request, 'debt_history/return_debts.html', {'form': form})

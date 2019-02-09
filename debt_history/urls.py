@@ -1,5 +1,5 @@
 from django.urls import path
-from .views import registration, logout_view, make_bill, debt_list, bill_list, add_group, whom_how_much, money_return, group_list
+from .views import registration, logout_view, make_bill, common, bill_list, add_group, whom_how_much, money_return, group_list
 
 
 
@@ -8,7 +8,7 @@ urlpatterns = [
     path('group/new/', add_group, name='newgroup'),
     path('logout/', logout_view, name='logout'),
     path('bills/new/', make_bill, name='make_bill'),
-    path('', debt_list, name='debt_list'),
+    path('', common, name='common'),
     path('bills/list/', bill_list, name='bill_list'),
     path('debts/my/', whom_how_much, name='whom_how_much'),
     path('return/', money_return, name='money_return'),
