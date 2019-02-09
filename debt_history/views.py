@@ -2,9 +2,7 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import authenticate, login, logout
 from django.contrib.auth.decorators import login_required
-from django import forms
 from django.db.models import Sum
-from debt_history.models import *
 from .forms import RegisterForm, AddBill, AddGroup, ShowGroup, PayBill
 from .models import Bill, Group, Debt
 
@@ -70,6 +68,7 @@ def make_bill(request):
         form = AddBill(request.user)
     return render(request, 'debt_history/make_debts.html', {'form': form})
 
+
 @login_required
 def debt_list(request):
     debt_l = Debt.objects.filter(bill__author=request.user, paid=False).all()
@@ -90,24 +89,22 @@ def debt_list(request):
 
     total_balance = {}
     total_balance = Bill.objects.aggregate(Sum('debt_amount'))
-    
 
-    
+    return render(request, 'debt_history/debt_list.html', {'debt_list': debts, 'debts_by_user': debts_by_user,
+                                                           'total_balance': total_balance})
 
-    return render(request, 'debt_history/debt_list.html', {'debt_list': debts, 'debts_by_user': debts_by_user, 'total_balance': total_balance})
 
-#просто выводит все объекты модели Bill
+# просто выводит все объекты модели Bill
 def bill_list(request):
     bills = Bill.objects.all()
     return render(request, 'debt_history/bills_list.html', {'bill_list': bills})
+
 
 @login_required
 def group_list(request):
     current_user = request.user
     form = ShowGroup(current_user)
     return render(request, 'dash/dashleftbar.html', {'form': form})
-
-    
 
 
 def whom_how_much(request):
@@ -126,18 +123,18 @@ def whom_how_much(request):
 
 
 def money_return(request):
-    current_user = request.user.id
+    current_user = request.user
     if request != 'POST':
-        form = PayBill(request.user)
+        form = PayBill(current_user)
     else:
-        form = PayBill(request.user, request.POST)
+        form = PayBill(current_user, request.POST)
         if form.is_valid():
             data = form.cleaned_data
             print(data)
             amount = data['amount']
             amount = pay_money(amount)
             if amount > 0:
-                bill = Bill(author=current_user, title='Излишек',
+                bill = Bill(author=current_user.id, title='Излишек',
                             debt_amount=amount, text_comment='Излишек')
                 bill.save()
                 debt = Debt(user=data['friend'], bill=bill, percent=100)
