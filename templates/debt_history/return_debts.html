@@ -1,16 +1,22 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <title>Return Debts</title>
-</head>
-<body>
+{% extends "base_auth.html" %}
 
-<form action="" method="post" class="post-form">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <input type="submit" value="Сохранить">
+
+{% block title_sidebar %}
+<h2>Debtswise<br> Pay Back Page</h2>
+<p>Return money here.</p>
+{% endblock %}
+
+{% block content %}
+<div class="main">
+    <div class="col-md-6 col-sm-12">
+       <div class="login-form">
+            <form action="" method="post" class="post-form">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <button type="submit" class="btn btn-black">Сохранить</button>
 </form>
+</div>
+</div>
 
-</body>
-</html>
+</div>
+{% endblock %}

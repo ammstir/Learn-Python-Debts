@@ -1,6 +1,7 @@
 {% extends "dash\dashcentercontent.html" %}
 
 
+
 {% block buttons %}
 <br>
 <div class="container">
@@ -15,7 +16,7 @@
                 <a class="btn btn-secondary btn-sm" href="{% url 'newgroup' %}" role="button">Добавить группу</a>
           </div>
           <div class="col-sm">
-                <a class="btn btn-secondary btn-sm" href="{% url 'make_bill' %}" role="button">Погасить долг</a>
+                <a class="btn btn-secondary btn-sm" href="{% url 'money_return' %}" role="button">Погасить долг</a>
             </div>
         </div>
     </div>
@@ -31,7 +32,7 @@
             Общий баланс группы {{ total_balance.debt_amount__sum }}
           </div>
           <div class="col-sm">
-            Тут сколько вы суммарно должны всем
+            {{ whom }}
           </div>
           <div class="col-sm">
             Тут сколько вам

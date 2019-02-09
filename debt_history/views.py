@@ -72,6 +72,8 @@ def make_bill(request):
 
 @login_required
 def debt_list(request):
+    current_user = request.user
+    form = ShowGroup(current_user)
     debt_l = Debt.objects.filter(bill__author=request.user, paid=False).all()
     debts = []
     for debt in debt_l:
@@ -91,10 +93,21 @@ def debt_list(request):
     total_balance = {}
     total_balance = Bill.objects.aggregate(Sum('debt_amount'))
     
+    user_id = request.user.id
+    allmydebts = Debt.objects.filter(user_id=user_id)
+    whom = {}
+    for debt in allmydebts:
+        name = debt.bill.author.username
+        amount = calculate_debt_amount(debt)
+        if name not in whom:
+            whom.update({name: amount})
+        else:
+            whom[name] += amount
 
     
+    
 
-    return render(request, 'debt_history/debt_list.html', {'debt_list': debts, 'debts_by_user': debts_by_user, 'total_balance': total_balance})
+    return render(request, 'debt_history/debt_list.html', {'debt_list': debts, 'debts_by_user': debts_by_user, 'total_balance': total_balance,'whom': whom, 'form': form})
 
 #просто выводит все объекты модели Bill
 def bill_list(request):
@@ -142,8 +155,8 @@ def money_return(request):
                 bill.save()
                 debt = Debt(user=data['friend'], bill=bill, percent=100)
                 debt.save()
-
-            return render(request, 'debt_history/return_debts.html', {'form': form})
+        return redirect('debt_list')
+            
 
     return render(request, 'debt_history/return_debts.html', {'form': form})
 
